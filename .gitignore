@@ -1,0 +1,17 @@
+node_modules/
+dist/
+runs/
+spike/out/
+spike/.venv/
+video/out/
+__pycache__/
+*.pyc
+# full-quality renders (over GitHub's file limit) and local backups; the repo carries video/trompe_demo_web.mp4
+video/trompe_demo.mp4
+video/trompe_demo_sfx_only.mp4
+video/out_v2_backup/
+video/*.log
+# the demo's score was generated for us and isn't ours to relicense; bring your own track (see README)
+video/audio/music*
+video/audio/beats_v1.json
+samples/village_v1.glb
