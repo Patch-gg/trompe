@@ -194,16 +194,16 @@ export class Viewer {
   }
 
   /** Pink markers for player points and planned cameras. */
-  showPlan(points: THREE.Vector3[], views: ViewSpec[], scale = 0.9) {
+  showPlan(points: THREE.Vector3[], views: ViewSpec[], scale = 0.9, color: THREE.ColorRepresentation = PINK) {
     this.clearOverlay();
     this.points = new THREE.Points(new THREE.BufferGeometry().setFromPoints(points.map((p) => p.clone().setY(p.y - 1.6))),
-      new THREE.PointsMaterial({ color: PINK, size: 7, sizeAttenuation: false, depthTest: true }));
+      new THREE.PointsMaterial({ color, size: 7, sizeAttenuation: false, depthTest: true }));
     this.overlay.add(this.points);
     const segs: number[] = [];
     for (const v of views) frustumSegments(v, scale, segs);
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.Float32BufferAttribute(segs, 3));
-    this.frusta = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: PINK, transparent: true, opacity: 0.95 }));
+    this.frusta = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.95 }));
     this.overlay.add(this.frusta);
     this.dirty = true;
   }

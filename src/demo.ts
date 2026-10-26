@@ -44,7 +44,7 @@ export class Demo {
 
   constructor(private readonly session: Session) {}
 
-  async setup(level: string, run: string, atlasSize = 8192, width = 1920, height = 1080) {
+  async setup(level: string, run: string, atlasSize = 8192, width = 1920, height = 1080, overlayColor = '#F53CD1') {
     const s = this.session;
     await s.load(`/${level}`, level.split('/').pop()!.replace(/\.\w+$/, ''), undefined, atlasSize);
     await s.loadRun(run);
@@ -60,7 +60,7 @@ export class Demo {
     this.before?.dispose();
     this.before = floatTarget(size, size, { half: true, linear: true });
     s.viewer!.texMaterial.uniforms.before.value = this.before.texture;
-    s.viewer!.showPlan(s.plan!.points, s.plan!.views, 1.6);
+    s.viewer!.showPlan(s.plan!.points, s.plan!.views, 1.6, overlayColor);
     s.viewer!.resize(width, height);
     return {
       waves: this.waves.map((w) => ({ views: w.map((v) => v.index), models: w.map((v) => v.model),

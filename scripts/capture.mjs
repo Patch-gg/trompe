@@ -12,6 +12,8 @@ const { values: a } = parseArgs({ options: {
   run: { type: 'string', default: 'village-02' }, level: { type: 'string', default: 'samples/village.glb' },
   out: { type: 'string', default: 'video/out' }, fps: { type: 'string', default: '30' }, atlas: { type: 'string', default: '8192' },
   only: { type: 'string' }, every: { type: 'string', default: '1' },
+  // the plan's spots and cameras; black keeps the brand's one pink thing per view (the patch on the frame)
+  'overlay-color': { type: 'string', default: '#000000' },
 } });
 const FPS = +a.fps;
 const OUT = path.resolve(a.out);
@@ -110,8 +112,8 @@ const browser = await launchBrowser();
 const t0 = Date.now();
 try {
   const page = await openApp(browser, url, { width: 1920, height: 1080, onLog: (s) => console.log(s) });
-  const d = await page.evaluate(([lvl, run, atlas]) => window.trompe.demo.setup(lvl, run, +atlas, 1920, 1080),
-    [a.level, a.run, a.atlas]);
+  const d = await page.evaluate(([lvl, run, atlas, color]) => window.trompe.demo.setup(lvl, run, +atlas, 1920, 1080, color),
+    [a.level, a.run, a.atlas, a['overlay-color']]);
   console.log(`run ${a.run}: ${d.views} views in ${d.waves.length} waves from ${d.points} spots, $${d.cost.toFixed(2)}, ${d.seconds.toFixed(0)} s`);
   const timeline = { fps: FPS, width: 1920, height: 1080, run: a.run, data: d, frames: [] };
   const total = Math.round(SECTIONS.at(-1).end * FPS);

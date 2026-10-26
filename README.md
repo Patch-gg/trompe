@@ -1,16 +1,21 @@
-# trompe
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/readme/header-evening.png">
+  <img alt="patch. trompe. Texture a whole game level from a gray blockout." src="docs/readme/header-day.png" width="800">
+</picture>
 
-Texture a whole game level from an untextured blockout. trompe works in four steps:
-1. It plans cameras where a player can stand.
-2. An image model paints what each camera sees.
-3. Each painting is projected back onto the level.
-4. Everything is baked into one texture you can export as glTF.
+<br><br>
 
-The image models run on fal; the planning, projection and baking run in the browser on your GPU.
+<img alt="A gray village blockout fills with texture as image models paint it, then steps back into a frame beside its label." src="docs/readme/trompe.gif" width="800">
 
-![demo poster](video/trompe_demo_poster.jpg)
+**@patch_gg** · village blockout + FLUX 3 Klein + Fibo 2 · 128 views on fal, $4.44, 26 minutes, one view at a time.
 
-Demo: [video/trompe_demo_web.mp4](video/trompe_demo_web.mp4) (42 s). The village in it (run `village-07`) took 128 views, $4.44 and 26 minutes on fal, painted one view at a time under overcast light: 88 views from where players stand, 20 over the roofs, 11 around the outside and 9 filling holes. It's shown lit by a real sun, which swings round in the last shot. [video/before_after.jpg](video/before_after.jpg) compares it with an earlier run from the same cameras. [video/shadows_before_after.jpg](video/shadows_before_after.jpg) shows baked sun shadows next to real lighting, and [video/prompt_fix.jpg](video/prompt_fix.jpg) shows what the prompt change did to single views.
+trompe plans cameras where a player can stand, has an image model paint what each one sees, projects every painting
+back onto the level and bakes one texture. It paints under overcast light, so the texture comes out as albedo and your
+engine lights it with real shadows. Planning, projection and baking run in your browser on your GPU; the image models
+run on [fal](https://fal.ai).
+
+[Demo video, 42 s](video/trompe_demo_web.mp4) · [Before and after](video/before_after.jpg) ·
+[Baked shadows vs real light](video/shadows_before_after.jpg) · [What the prompts fixed](video/prompt_fix.jpg)
 
 ## Quick start
 
@@ -58,7 +63,19 @@ The demo level (`samples/build_village.py`) names its parts through glTF materia
 
 The AI sky backdrop averages sky pixels only from views whose model painted the whole frame (Klein). Masked fills leave the clay sky as it was.
 
-`src/demo.ts` and `scripts/capture.mjs` replay a saved run wave by wave and render the video frames straight off the WebGL canvas. `video/compose.py` adds type and picture-in-picture in Patch's Seed Pixel branding (brand direction 34). `video/seedpixel.py` ports Patch Pixel, the pod and the seed hash from the brand page, and the fonts are Chivo and Chivo Mono (SIL OFL, in `video/fonts/`). `video/audio.py` mixes the score and UI sounds, and `video/encode.sh` muxes the result.
+## The demo
+
+The village in the video is run `village-07`: 128 views, $4.44 and 26 minutes on fal, painted one view at a time under
+overcast light. 88 views come from where players stand, 20 from over the roofs, 11 from around the outside and 9 fill
+holes. It's shown lit by a real sun, which swings round in the last shot.
+
+`src/demo.ts` and `scripts/capture.mjs` replay a saved run wave by wave and render the frames straight off the WebGL
+canvas. `video/compose.py` lays them out in Patch's video style (`video/lightsdown.py`): the clip in a plain frame with
+the pink patch on its corner, one caption line under it, the label beside it. `video/audio.py` mixes the score and UI
+sounds, and `video/encode.sh` muxes the result. `docs/readme/make_art.py` draws this README's header and footer.
+
+The layout uses Patch's brand kit, which isn't in this repo: Patch Pixel is Patch's own typeface. Put the kit at
+`./brand-kit` (or point `PATCH_BRAND_KIT` at it) to rebuild the video or the README art.
 
 ## Tests
 
@@ -79,14 +96,23 @@ npm run build     # type check + production build
 
 ## License
 
-Apache-2.0, see [LICENSE](LICENSE). The fonts in `video/fonts/` (Chivo and Chivo Mono by Omnibus-Type) are under the
-SIL Open Font License 1.1 ([video/fonts/OFL.txt](video/fonts/OFL.txt)).
+Apache-2.0, see [LICENSE](LICENSE). The Patch name, mark, wordmark and Patch Pixel belong to Patch and aren't covered
+by it. Funnel Sans and Red Hat Mono in `video/fonts/` are under the SIL Open Font License 1.1
+([OFL-FunnelSans.txt](video/fonts/OFL-FunnelSans.txt), [OFL-RedHatMono.txt](video/fonts/OFL-RedHatMono.txt)).
 
 The demo video's music isn't in the repo. To rebuild the video with a score, put a track at `video/audio/music.mp3`
 and its downbeats in `video/audio/beats.json`; without one, `video/audio.py` mixes the UI sounds alone.
 
 ## Credits
 
-Made by [Patch](https://patch.gg). Image models run on [fal](https://fal.ai): FLUX 3 Klein by Black Forest Labs for
-first views, Fibo 2 Edit by Bria for fills and roofs (others are wired up in `src/providers/models.ts`). Built on
-[three.js](https://threejs.org), [three-mesh-bvh](https://github.com/gkjohnson/three-mesh-bvh), Vite and Playwright.
+Made by [Patch](https://patch.gg) ([@patch_gg](https://x.com/patch_gg)). Image models run on [fal](https://fal.ai):
+FLUX 3 Klein by Black Forest Labs for first views, Fibo 2 Edit by Bria for fills and roofs (others are wired up in
+`src/providers/models.ts`). Built on [three.js](https://threejs.org),
+[three-mesh-bvh](https://github.com/gkjohnson/three-mesh-bvh), Vite and Playwright.
+
+<br>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/readme/footer-evening.png">
+  <img alt="patch.gg. Mashups, mods and browser games." src="docs/readme/footer-day.png" width="500">
+</picture>

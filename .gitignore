@@ -15,3 +15,5 @@ video/*.log
 video/audio/music*
 video/audio/beats_v1.json
 samples/village_v1.glb
+# Patch's brand kit (Patch Pixel is Patch's own typeface): link or copy it here to rebuild the video and README art
+brand-kit
