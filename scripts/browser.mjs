@@ -8,10 +8,12 @@ export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 
 export async function launchBrowser() {
   const env = { ...process.env };
-  const args = ['--ignore-gpu-blocklist', '--enable-gpu'];
+  const args = ['--ignore-gpu-blocklist', '--enable-gpu', '--mute-audio'];
   const extraLibs = `${process.env.HOME}/chrome-deps/root/usr/lib/x86_64-linux-gnu`; // user-space NSS/ALSA (no sudo here)
   const libs = [];
   if (fs.existsSync(extraLibs)) libs.push(extraLibs);
+  // Windows: ANGLE's D3D11 backend runs on the real GPU in headless Chromium (TROMPE_ANGLE to pick another).
+  if (process.platform === 'win32') args.push(`--use-angle=${process.env.TROMPE_ANGLE ?? 'd3d11'}`);
   if (fs.existsSync('/usr/lib/wsl/lib/libd3d12.so')) {
     // WSL2: Mesa's D3D12 driver gives ANGLE the real GPU instead of SwiftShader.
     libs.push('/usr/lib/wsl/lib');
@@ -20,7 +22,8 @@ export async function launchBrowser() {
     args.push('--use-angle=gl-egl');
   }
   if (libs.length) env.LD_LIBRARY_PATH = [...libs, env.LD_LIBRARY_PATH].filter(Boolean).join(':');
-  return chromium.launch({ headless: true, args, env });
+  // TROMPE_CHROME: use this browser instead of Playwright's own
+  return chromium.launch({ headless: true, args, env, ...(process.env.TROMPE_CHROME ? { executablePath: process.env.TROMPE_CHROME } : {}) });
 }
 
 export async function startServer() {
