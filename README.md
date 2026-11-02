@@ -9,6 +9,8 @@
 
 **@patch_gg** · village blockout + FLUX 3 Klein + Fibo 2 · 128 views on fal, $4.44, 26 minutes, one view at a time.
 
+**Good for realistic buildings seen from a few metres or more:** third-person and top-down games, trailers, big backdrops, and a first look at a level. **Not for stylised looks:** it's a photo painter, so it adds grime and uneven colour. **Not for the ground at a first-person player's feet:** that blurs, because the whole level shares one texture.
+
 trompe plans cameras where a player can stand, has an image model paint what each one sees, projects every painting
 back onto the level and bakes one texture. It paints under overcast light, so the texture comes out as albedo and your
 engine lights it with real shadows. Planning, projection and baking run in your browser on your GPU; the image models
@@ -21,6 +23,7 @@ run on [fal](https://fal.ai).
 
 ```bash
 npm install
+npx playwright install chromium               # for the headless scripts below
 export FAL_KEY=your-fal-key                   # used by the dev server's fal proxy
 npm run dev                                   # http://localhost:5178
 ```
@@ -39,6 +42,10 @@ Headless, from the command line, the run is saved to `runs/<id>/`:
 node scripts/texture.mjs --level samples/village.glb --id village --views 90 --spacing 3.5 --aerial 8 --roofs 24 --holes 12 \
   --atlas 8192 --style "a sunlit Mediterranean hill village: weathered limestone and ochre plaster walls, ..."
 ```
+
+Add `--plan-only` to get a free quote first: it picks the cameras in about a second, calls no model and prints the number of views. Each view costs 1¢ to 4¢ and takes about 10 seconds. A run is saved only when it finishes, so a crash loses what it has paid for.
+
+On Windows the script runs through ANGLE's D3D11 backend (`TROMPE_ANGLE` picks another). `TROMPE_CHROME` points it at another Chromium or Chrome if Playwright's own isn't installed.
 
 To try prompt or model changes cheaply before a full run, `scripts/prompt-test.mjs` repaints chosen views of a saved run, with the texture rebuilt up to just before each one. It can also paint roof passes on top of the finished run, and it saves every image to `runs/<run>-ab/<tag>/`. `--dry` writes the prompts and inputs without calling any model.
 
